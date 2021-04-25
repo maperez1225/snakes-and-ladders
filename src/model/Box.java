@@ -2,17 +2,15 @@ package model;
 
 public class Box {
 	private int id;
-	private int row;
-	private int col;
 	private Box ladderTo;
 	private Box snakeTo;
-	private Box up;
-	private Box down;
-	private Box left;
-	private Box right;
-	public Box(int m, int n) {
-		row = m;
-		col = n;
+	private Box next;
+	private Box prev;
+	public Box(int i) {
+		id = i;
+	}
+	public String board() {
+		return "["+id+"]";
 	}
 	public int getId() {
 		return id;
@@ -32,34 +30,13 @@ public class Box {
 	public void setSnakeTo(Box snakeTo) {
 		this.snakeTo = snakeTo;
 	}
-	public Box getUp() {
-		return up;
+	public Box getNext() {
+		return next;
 	}
-	public void setUp(Box up) {
-		this.up = up;
+	public void setNext(Box right) {
+		this.next = right;
 	}
-	public Box getDown() {
-		return down;
-	}
-	public void setDown(Box down) {
-		this.down = down;
-	}
-	public Box getLeft() {
-		return left;
-	}
-	public void setLeft(Box left) {
-		this.left = left;
-	}
-	public Box getRight() {
-		return right;
-	}
-	public void setRight(Box right) {
-		this.right = right;
-	}
-	public int getRow() {
-		return row;
-	}
-	public int getCol() {
-		return col;
+	public Box getPrev() {
+		return prev;
 	}
 }

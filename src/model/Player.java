@@ -6,6 +6,7 @@ public class Player {
 	private int box;
 	public Player(char s) {
 		symbol = s;
+		box = 1;
 	}
 	public char getSymbol() {
 		return symbol;
