@@ -7,6 +7,8 @@ public class Game {
 	private int ladders;
 	private Player firstPlayer;
 	private Box firstBox;
+	private Snake firstSnake;
+	private Ladder firstLadder;
 	public Game(int m, int n, int s, int l, String players) {
 		rows = m;
 		cols = n;
@@ -14,6 +16,30 @@ public class Game {
 		ladders = l;
 		generateBoard();
 		generatePlayers(players);
+		generateSnakes(s);
+		generateLadders(l);
+	}
+	private void generateSnakes(int s) {
+		firstSnake = new Snake('A');
+		if (s > 1)
+			generateSnakes(firstSnake, s-1);
+	}
+	private void generateSnakes(Snake prev, int s) {
+		Snake next = new Snake((char)('A'+(snakes-s)));
+		prev.setNextSnake(next);
+		if (s > 1)
+			generateSnakes(next,s-1);
+	}
+	private void generateLadders(int l) {
+		firstLadder = new Ladder(1);
+		if (l > 1)
+			generateLadders(firstLadder, l-1);
+	}
+	private void generateLadders(Ladder prev, int l) {
+		Ladder next = new Ladder(1+(ladders-l));
+		prev.setNextLadder(next);
+		if (l > 1)
+			generateLadders(next,l-1);
 	}
 	private void generatePlayers(String players) {
 		firstPlayer = new Player(players.charAt(0));
@@ -81,19 +107,21 @@ public class Game {
 	}
 	public String statusEvenRow(int row, int colLeft) {
 		if (colLeft>1) 
-			return playersAtBox((row*cols)-(cols-colLeft))+statusEvenRow(row, colLeft-1);
+			return infoAtBox((row*cols)-(cols-colLeft))+statusEvenRow(row, colLeft-1);
 		else
-			return playersAtBox((row*cols)-(cols-colLeft));
+			return infoAtBox((row*cols)-(cols-colLeft));
 	}
 	public String statusOddRow(int row, int colLeft) {
 		if (colLeft>1)
-			return playersAtBox((row*cols)-colLeft+1)+statusOddRow(row, colLeft-1);
+			return infoAtBox((row*cols)-colLeft+1)+statusOddRow(row, colLeft-1);
 		else
-			return playersAtBox((row*cols));
+			return infoAtBox((row*cols));
 	}
-	public String playersAtBox(int box) {
+	public String infoAtBox(int box) {
 		String text = "[";
 		text += playerAtBox(firstPlayer, box);
+		text += snakeAtBox(firstSnake, box);
+		text += ladderAtBox(firstLadder, box);
 		text += "]";
 		return text;
 	}
@@ -108,6 +136,32 @@ public class Game {
 				return Character.toString(player.getSymbol())+playerAtBox(player.getNextPlayer(), box);
 			else
 				return " "+playerAtBox(player.getNextPlayer(), box);
+		}
+	}
+	public String snakeAtBox(Snake snake, int box) {
+		if (snake.getNextSnake() == null) {
+			if (snake.getBeginning() == box || snake.getEnd() == box)
+				return Character.toString(snake.getId());
+			else
+				return " ";
+		}else {
+			if (snake.getBeginning() == box || snake.getEnd() == box)
+				return Character.toString(snake.getId())+snakeAtBox(snake.getNextSnake(), box);
+			else
+				return " "+snakeAtBox(snake.getNextSnake(), box);
+		}
+	}
+	public String ladderAtBox(Ladder ladder, int box) {
+		if (ladder.getNextLadder() == null) {
+			if (ladder.getBeginning() == box || ladder.getEnd() == box)
+				return String.valueOf(ladder.getId());
+			else
+				return " ";
+		}else {
+			if (ladder.getBeginning() == box || ladder.getEnd() == box)
+				return String.valueOf(ladder.getId())+ladderAtBox(ladder.getNextLadder(), box);
+			else
+				return " "+ladderAtBox(ladder.getNextLadder(), box);
 		}
 	}
 }

@@ -1,17 +1,18 @@
 package model;
 
 public class Ladder {
-
 	private int beginning;
 	private int end;
 	private Ladder nextLadder;
 	private int id;
-	
+	public Ladder(int i) {
+		id = i;
+	}
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setId(int i) {
+		id = i;
 	}
 	public int getBeginning() {
 		return beginning;
@@ -31,8 +32,4 @@ public class Ladder {
 	public void setNextLadder(Ladder nextLadder) {
 		this.nextLadder = nextLadder;
 	}
-	public Ladder() {
-		
-	}
-
 }

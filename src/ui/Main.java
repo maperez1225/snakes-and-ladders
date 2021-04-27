@@ -46,7 +46,15 @@ public class Main {
 		}
 	}
 	public static void newGame() {
-		
+		System.out.println("Ingrese los criterios para crear el juego separado por espacio: filas, columnas, serpientes, escaleras, simbolos de jugadores todos juntos");
+		String[] gameArgs = sc.nextLine().split(" ");
+		if (gameArgs.length == 5) {
+			game = new Game(Integer.parseInt(gameArgs[0]),Integer.parseInt(gameArgs[1]),Integer.parseInt(gameArgs[2]),Integer.parseInt(gameArgs[3]),gameArgs[4]);
+		}
+		else {
+			System.out.println("Formato de criterios invalido.");
+			newGame();
+		}
 	}
 	public static void showLeaderboard(Score highScore) {
 		if (root == null)
