@@ -5,8 +5,7 @@ public class Snake {
 	private int end;
 	private Snake nextSnake;
 	private char id;
-	public Snake(char i) {
-		id = i;
+	public Snake() {
 	}
 	public char getId() {
 		return id;

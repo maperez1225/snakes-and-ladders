@@ -5,8 +5,7 @@ public class Ladder {
 	private int end;
 	private Ladder nextLadder;
 	private int id;
-	public Ladder(int i) {
-		id = i;
+	public Ladder() {
 	}
 	public int getId() {
 		return id;

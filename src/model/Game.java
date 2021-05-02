@@ -1,5 +1,5 @@
 package model;
-
+import java.util.Random;
 public class Game {
 	private int rows;
 	private int cols;
@@ -16,30 +16,146 @@ public class Game {
 		ladders = l;
 		generateBoard();
 		generatePlayers(players);
-		generateSnakes(s);
-		generateLadders(l);
+		generateSnakes(snakes);
+		generateLadders(ladders);
+		assignSnakeLetters('A', cols+1);
+		assignLadderNumbers(1,2);
 	}
 	private void generateSnakes(int s) {
-		firstSnake = new Snake('A');
+		firstSnake = new Snake();
+		assignStart(firstSnake);
+		assignEnd(firstSnake);
 		if (s > 1)
 			generateSnakes(firstSnake, s-1);
 	}
 	private void generateSnakes(Snake prev, int s) {
-		Snake next = new Snake((char)('A'+(snakes-s)));
+		Snake next = new Snake();
 		prev.setNextSnake(next);
+		assignStart(next);
+		assignEnd(next);
 		if (s > 1)
 			generateSnakes(next,s-1);
 	}
+	private void assignStart(Snake snake) {
+		Random r = new Random();
+		int start = r.ints(cols+1,rows*cols).findFirst().getAsInt();
+		if (snakeAtBox(firstSnake, start).equals(" ")) {
+			snake.setBeginning(start);
+		}
+		else
+			assignStart(snake);
+	}
+	private void assignEnd(Snake snake) {
+		Random r = new Random();
+		int end = r.ints(1,snakeEndLimit(snake.getBeginning(),(rows*cols))).findFirst().getAsInt();
+		if (snakeAtBox(firstSnake, end).equals(" ")) {
+			snake.setEnd(end);
+		}
+		else
+			assignEnd(snake);
+	}
+	private int snakeEndLimit(int start, int maxRow) {
+		if (start > maxRow-rows)
+			return maxRow-rows;
+		else
+			return snakeEndLimit(start, maxRow-rows);
+	}
+	private void assignSnakeLetters(char c, int box) {
+		if (box<rows*cols) {
+			if (snakeStartAtBox(firstSnake, box)) {
+				searchSnake(firstSnake,box).setId(c);
+				assignSnakeLetters((char)(c+1),box+1);
+			}else {
+				assignSnakeLetters(c,box+1);
+			}
+		}
+	}
+	public Snake searchSnake(Snake snake, int start) {
+		if (snake.getBeginning() == start)
+			return snake;
+		else
+			return searchSnake(snake.getNextSnake(), start);
+	}
+	private boolean snakeStartAtBox(Snake snake, int box) {
+		if (snake.getNextSnake() == null) {
+			if (snake.getBeginning() == box)
+				return true;
+			else
+				return false;
+		}else {
+			if (snake.getBeginning() == box)
+				return true;
+			else
+				return snakeStartAtBox(snake.getNextSnake(), box);
+		}
+	}
 	private void generateLadders(int l) {
-		firstLadder = new Ladder(1);
+		firstLadder = new Ladder();
+		assignStart(firstLadder);
+		assignEnd(firstLadder);
 		if (l > 1)
 			generateLadders(firstLadder, l-1);
 	}
 	private void generateLadders(Ladder prev, int l) {
-		Ladder next = new Ladder(1+(ladders-l));
+		Ladder next = new Ladder();
 		prev.setNextLadder(next);
+		assignStart(next);
+		assignEnd(next);
 		if (l > 1)
 			generateLadders(next,l-1);
+	}
+	private void assignStart(Ladder ladder) {
+		Random r = new Random();
+		int start = r.ints(2,(rows*cols)-cols).findFirst().getAsInt();
+		if (snakeAtBox(firstSnake, start).equals(" ") && ladderAtBox(firstLadder, start).equals(" ")) {
+			ladder.setBeginning(start);
+		}
+		else
+			assignStart(ladder);
+	}
+	private void assignEnd(Ladder ladder) {
+		Random r = new Random();
+		int end = r.ints(ladderEndLimit(ladder.getBeginning(),rows*cols),rows*cols).findFirst().getAsInt();
+		if (snakeAtBox(firstSnake, end).equals(" ") && ladderAtBox(firstLadder, end).equals(" ")) {
+			ladder.setEnd(end);
+		}
+		else
+			assignEnd(ladder);
+	}
+	private int ladderEndLimit(int start, int maxRow) {
+		if (start > maxRow-cols)
+			return maxRow + 1;
+		else
+			return ladderEndLimit(start, maxRow-cols);
+	}
+	private void assignLadderNumbers(int n, int box) {
+		if (box<=(rows*cols)-cols) {
+			if (ladderStartAtBox(firstLadder, box)) {
+				searchLadder(firstLadder,box).setId(n);
+				assignLadderNumbers(n+1,box+1);
+			}else {
+				assignLadderNumbers(n,box+1);
+			}
+		}
+	}
+	private Ladder searchLadder(Ladder ladder, int start) {
+		if (ladder.getBeginning() == start)
+			return ladder;
+		else
+			return searchLadder(ladder.getNextLadder(), start);
+	}
+	private boolean ladderStartAtBox(Ladder ladder, int box) {
+		if (ladder.getNextLadder() == null) {
+			if (ladder.getBeginning() == box)
+				return true;
+			else
+				return false;
+		}else {
+			if (ladder.getBeginning() == box)
+				return true;
+			else
+				return ladderStartAtBox(ladder.getNextLadder(), box);
+		}
 	}
 	private void generatePlayers(String players) {
 		firstPlayer = new Player(players.charAt(0));
@@ -146,9 +262,9 @@ public class Game {
 				return " ";
 		}else {
 			if (snake.getBeginning() == box || snake.getEnd() == box)
-				return Character.toString(snake.getId())+snakeAtBox(snake.getNextSnake(), box);
+				return Character.toString(snake.getId());
 			else
-				return " "+snakeAtBox(snake.getNextSnake(), box);
+				return snakeAtBox(snake.getNextSnake(), box);
 		}
 	}
 	public String ladderAtBox(Ladder ladder, int box) {
@@ -159,9 +275,9 @@ public class Game {
 				return " ";
 		}else {
 			if (ladder.getBeginning() == box || ladder.getEnd() == box)
-				return String.valueOf(ladder.getId())+ladderAtBox(ladder.getNextLadder(), box);
+				return String.valueOf(ladder.getId());
 			else
-				return " "+ladderAtBox(ladder.getNextLadder(), box);
+				return ladderAtBox(ladder.getNextLadder(), box);
 		}
 	}
 }

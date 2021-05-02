@@ -50,6 +50,7 @@ public class Main {
 		String[] gameArgs = sc.nextLine().split(" ");
 		if (gameArgs.length == 5) {
 			game = new Game(Integer.parseInt(gameArgs[0]),Integer.parseInt(gameArgs[1]),Integer.parseInt(gameArgs[2]),Integer.parseInt(gameArgs[3]),gameArgs[4]);
+			System.out.println(game.status(Integer.parseInt(gameArgs[0])));
 		}
 		else {
 			System.out.println("Formato de criterios invalido.");
