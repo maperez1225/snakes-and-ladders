@@ -13,6 +13,7 @@ public class Main {
 	public static Scanner sc;
 	public static Game game;
 	public static Score root;
+
 	public static void main(String[] args) {
 		sc = new Scanner(System.in);
 		try {
@@ -22,6 +23,7 @@ public class Main {
 		}
 		showMenu();
 	}
+	
 	public static void showMenu() {
 		System.out.println("Ingrese la opcion que desea realizar: "
 				+ "\n1. Nuevo Juego"
@@ -45,6 +47,7 @@ public class Main {
 			showMenu();
 		}
 	}
+	
 	public static void newGame() {
 		System.out.println("Ingrese los criterios para crear el juego separado por espacio: filas, columnas, serpientes, escaleras, simbolos de jugadores todos juntos");
 		String[] gameArgs = sc.nextLine().split(" ");
@@ -57,6 +60,7 @@ public class Main {
 			newGame();
 		}
 	}
+	
 	public static void showLeaderboard(Score highScore) {
 		if (root == null)
 			System.out.println("No hay puntajes");
@@ -68,6 +72,7 @@ public class Main {
 			showLeaderboard(highScore.getRight());
 		}
 	}
+	
 	public static void addScore(Score parent, Score newScore) throws IOException{
 		if (parent == null) {
 			parent = newScore;
@@ -77,11 +82,13 @@ public class Main {
 		else
 			addScore(parent.getLeft(), newScore);
 	}
+	
 	public static void saveData() throws IOException{
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(SAVE_PATH_FILE));
 		oos.writeObject(root);
 		oos.close();
 	}
+	
 	public static boolean loadData() throws IOException, ClassNotFoundException{
 		File f = new File(SAVE_PATH_FILE);
 		boolean loaded = false;
