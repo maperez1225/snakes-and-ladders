@@ -5,7 +5,9 @@ public class Game {
 	private int cols;
 	private int snakes;
 	private int ladders;
+	private int moves;
 	private Player firstPlayer;
+	private Player activePlayer;
 	private Box firstBox;
 	private Snake firstSnake;
 	private Ladder firstLadder;
@@ -70,7 +72,7 @@ public class Game {
 			}
 		}
 	}
-	public Snake searchSnake(Snake snake, int start) {
+	private Snake searchSnake(Snake snake, int start) {
 		if (snake.getBeginning() == start)
 			return snake;
 		else
@@ -159,6 +161,7 @@ public class Game {
 	}
 	private void generatePlayers(String players) {
 		firstPlayer = new Player(players.charAt(0));
+		activePlayer = firstPlayer;
 		if (players.length() > 1)
 			generatePlayers(firstPlayer, players.substring(1));
 	}
@@ -179,6 +182,33 @@ public class Game {
 			generateBoard(next, i+1);
 		}
 	}
+	public int getFinalBox() {
+		return rows*cols;
+	}
+	public Player getActivePlayer(){
+		return activePlayer;
+	}
+	public int getMoves() {
+		return moves;
+	}
+	public void updateActivePlayer() {
+		if (activePlayer == firstPlayer)
+			moves = getMoves() + 1;
+		if (activePlayer.getNextPlayer()!=null)
+			activePlayer = activePlayer.getNextPlayer();
+		else
+			activePlayer = firstPlayer;
+	}
+	public void moveActivePlayer(int n) {
+		int newBox = activePlayer.getBox()+n;
+		activePlayer.setBox(newBox);
+		if (snakeStartAtBox(firstSnake, newBox))
+			activePlayer.setBox(searchSnake(firstSnake, newBox).getEnd());
+		else if (ladderStartAtBox(firstLadder, newBox))
+			activePlayer.setBox(searchLadder(firstLadder,newBox).getEnd());
+	}
+	public void endGame() {
+	}
 	public Box searchBox(int i) {
 		if (i == 1)
 			return firstBox;
@@ -191,6 +221,9 @@ public class Game {
 		else
 			return searchBox(box.getNext(), i);
 	}
+	public String board() {
+		return board(rows);
+	}
 	public String board(int rowLeft) {
 		if (rowLeft > 1) {
 			if ((rowLeft % 2) == 0)
@@ -201,16 +234,24 @@ public class Game {
 			return oddRow(rowLeft, cols);
 	}
 	public String evenRow(int row, int colLeft) {
+		Box box = searchBox((row*cols)-(cols-colLeft));
 		if (colLeft>1) 
-			return searchBox((row*cols)-(cols-colLeft)).board()+evenRow(row, colLeft-1);
+			return "["+box.idBoard()+" "+snakeAtBox(firstSnake,box.getId())+ladderAtBox(firstLadder,box.getId())+"]"+evenRow(row, colLeft-1);
 		else
-			return searchBox((row*cols)-(cols-colLeft)).board();
+			return "["+box.idBoard()+" "+snakeAtBox(firstSnake,box.getId())+ladderAtBox(firstLadder,box.getId())+"]";
 	}
 	public String oddRow(int row, int colLeft) {
-		if (colLeft>1)
-			return searchBox((row*cols)-colLeft+1).board()+oddRow(row, colLeft-1);
-		else
-			return searchBox((row*cols)).board();
+		if (colLeft>1) {
+			Box box = searchBox((row*cols)-colLeft+1);
+			return "["+box.idBoard()+" "+snakeAtBox(firstSnake,box.getId())+ladderAtBox(firstLadder,box.getId())+"]"+oddRow(row, colLeft-1);
+		}
+		else {
+			Box box = searchBox((row*cols));
+			return "["+box.idBoard()+" "+snakeAtBox(firstSnake,box.getId())+ladderAtBox(firstLadder,box.getId())+"]";
+		}
+	}
+	public String status() {
+		return status(rows);
 	}
 	public String status(int rowLeft) {
 		if (rowLeft > 1) {

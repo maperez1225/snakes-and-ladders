@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Random;
 import java.util.Scanner;
 import model.Game;
 import model.Score;
@@ -53,7 +54,10 @@ public class Main {
 		String[] gameArgs = sc.nextLine().split(" ");
 		if (gameArgs.length == 5) {
 			game = new Game(Integer.parseInt(gameArgs[0]),Integer.parseInt(gameArgs[1]),Integer.parseInt(gameArgs[2]),Integer.parseInt(gameArgs[3]),gameArgs[4]);
-			System.out.println(game.status(Integer.parseInt(gameArgs[0])));
+			System.out.println("El tablero se ha generado:");
+			System.out.println(game.board());
+			System.out.println();
+			nextTurn();
 		}
 		else {
 			System.out.println("Formato de criterios invalido.");
@@ -61,6 +65,42 @@ public class Main {
 		}
 	}
 	
+	public static void nextTurn() {
+		System.out.println("Es el turno de "+game.getActivePlayer().getSymbol());
+		System.out.println(game.status());
+		System.out.println("Presione ENTER para lanzar el dado");
+		executeAction(sc.nextLine());
+	}
+
+	public static void executeAction(String line) {
+		if (line.equalsIgnoreCase("num")) {
+			System.out.println("Vista inicial del tablero:");
+			System.out.println(game.board());
+			System.out.println("Presione ENTER para continuar con la partida");
+			sc.nextLine();
+			nextTurn();
+		}else if(line.equalsIgnoreCase("simul")) {
+			
+		}else if (line.equalsIgnoreCase("menu"))
+			showMenu();
+		else {
+			Random r = new Random();
+			int roll = r.ints(1,6).findFirst().getAsInt();
+			System.out.println("Se ha lanzado un "+roll);
+			game.moveActivePlayer(roll);
+			if (game.getActivePlayer().getBox() >= game.getFinalBox())
+				endGame();
+			else {
+				game.updateActivePlayer();
+				nextTurn();
+			}
+		}
+	}
+
+	public static void endGame() {
+		System.out.println("El jugador "+game.getActivePlayer().getSymbol()+" ha ganado en "+game.getMoves()+" turnos.");
+	}
+
 	public static void showLeaderboard(Score highScore) {
 		if (root == null)
 			System.out.println("No hay puntajes");

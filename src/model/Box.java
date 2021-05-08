@@ -7,8 +7,13 @@ public class Box {
 	public Box(int i) {
 		id = i;
 	}
-	public String board() {
-		return "["+id+"]";
+	public String idBoard() {
+		if (id >= 100)
+			return String.valueOf(id);
+		else if (id >= 10)
+			return id+" ";
+		else
+			return id+"  ";
 	}
 	public int getId() {
 		return id;
