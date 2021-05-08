@@ -67,6 +67,7 @@ public class Main {
 	
 	public static void nextTurn() {
 		System.out.println("Es el turno de "+game.getActivePlayer().getSymbol());
+		System.out.println("Turno: "+game.getMoves());
 		System.out.println(game.status());
 		System.out.println("Presione ENTER para lanzar el dado");
 		executeAction(sc.nextLine());
@@ -88,7 +89,7 @@ public class Main {
 			int roll = r.ints(1,6).findFirst().getAsInt();
 			System.out.println("Se ha lanzado un "+roll);
 			game.moveActivePlayer(roll);
-			if (game.getActivePlayer().getBox() >= game.getFinalBox())
+			if (game.getActivePlayer().getBox() == game.getFinalBox())
 				endGame();
 			else {
 				game.updateActivePlayer();
@@ -99,6 +100,9 @@ public class Main {
 
 	public static void endGame() {
 		System.out.println("El jugador "+game.getActivePlayer().getSymbol()+" ha ganado en "+game.getMoves()+" turnos.");
+		System.out.println(game.status());
+		int score = game.getMoves()*game.getFinalBox();
+		System.out.println("Puntaje: "+score);
 	}
 
 	public static void showLeaderboard(Score highScore) {

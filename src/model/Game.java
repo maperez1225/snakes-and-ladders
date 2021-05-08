@@ -16,6 +16,7 @@ public class Game {
 		cols = n;
 		snakes = s;
 		ladders = l;
+		moves = 1;
 		generateBoard();
 		generatePlayers(players);
 		generateSnakes(snakes);
@@ -192,16 +193,19 @@ public class Game {
 		return moves;
 	}
 	public void updateActivePlayer() {
-		if (activePlayer == firstPlayer)
-			moves = getMoves() + 1;
 		if (activePlayer.getNextPlayer()!=null)
 			activePlayer = activePlayer.getNextPlayer();
-		else
+		else {
 			activePlayer = firstPlayer;
+			moves++;
+		}
 	}
 	public void moveActivePlayer(int n) {
 		int newBox = activePlayer.getBox()+n;
-		activePlayer.setBox(newBox);
+		if (newBox > getFinalBox())
+			activePlayer.setBox(getFinalBox());
+		else
+			activePlayer.setBox(newBox);
 		if (snakeStartAtBox(firstSnake, newBox))
 			activePlayer.setBox(searchSnake(firstSnake, newBox).getEnd());
 		else if (ladderStartAtBox(firstLadder, newBox))
