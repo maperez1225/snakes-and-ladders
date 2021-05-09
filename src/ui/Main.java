@@ -8,7 +8,6 @@ import java.io.ObjectOutputStream;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-
 import model.Game;
 import model.Score;
 public class Main {
@@ -22,13 +21,13 @@ public class Main {
 			loadData();
 			showMenu();
 		} catch (ClassNotFoundException | IOException e) {
-			System.out.println("Excepcion al leer los datos del puntaje.");
+			System.out.println("Excepcion al leer los datos de puntaje.");
 		}
 	}
 	public static void showMenu(){
 		System.out.println("Ingrese la opcion que desea realizar: "
 				+ "\n1. Nuevo Juego"
-				+ "\n2. Ver Resultados"
+				+ "\n2. Ver Puntajes"
 				+ "\n3. Salir");
 		int option = sc.nextInt();
 		sc.nextLine();
