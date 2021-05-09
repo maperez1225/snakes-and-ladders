@@ -1,5 +1,4 @@
 package model;
-
 public class Ladder {
 	private int beginning;
 	private int end;
@@ -10,32 +9,25 @@ public class Ladder {
 	public int getId() {
 		return id;
 	}
-	
 	public void setId(int i) {
 		id = i;
 	}
-	
 	public int getBeginning() {
 		return beginning;
 	}
-	
-	public void setBeginning(int beginning) {
-		this.beginning = beginning;
+	public void setBeginning(int b) {
+		beginning = b;
 	}
-	
 	public int getEnd() {
 		return end;
 	}
-	
-	public void setEnd(int end) {
-		this.end = end;
+	public void setEnd(int e) {
+		end = e;
 	}
-	
 	public Ladder getNextLadder() {
 		return nextLadder;
 	}
-	
-	public void setNextLadder(Ladder nextLadder) {
-		this.nextLadder = nextLadder;
+	public void setNextLadder(Ladder l) {
+		nextLadder = l;
 	}
 }

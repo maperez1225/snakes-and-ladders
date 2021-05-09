@@ -1,5 +1,4 @@
 package model;
-
 public class Box {
 	private int id;
 	private Box next;
@@ -24,8 +23,8 @@ public class Box {
 	public Box getNext() {
 		return next;
 	}
-	public void setNext(Box right) {
-		this.next = right;
+	public void setNext(Box n) {
+		next = n;
 	}
 	public Box getPrev() {
 		return prev;

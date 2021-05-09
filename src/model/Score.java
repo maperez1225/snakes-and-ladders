@@ -14,20 +14,20 @@ public class Score implements Serializable{
 	public Score getParent() {
 		return parent;
 	}
-	public void setParent(Score parent) {
-		this.parent = parent;
+	public void setParent(Score p) {
+		parent = p;
 	}
 	public Score getLeft() {
 		return left;
 	}
-	public void setLeft(Score left) {
-		this.left = left;
+	public void setLeft(Score l) {
+		left = l;
 	}
 	public Score getRight() {
 		return right;
 	}
-	public void setRight(Score right) {
-		this.right = right;
+	public void setRight(Score r) {
+		right = r;
 	}
 	public int getScore() {
 		return score;

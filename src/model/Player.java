@@ -1,5 +1,4 @@
 package model;
-
 public class Player {
 	private char symbol;
 	private Player nextPlayer;
@@ -14,14 +13,13 @@ public class Player {
 	public Player getNextPlayer() {
 		return nextPlayer;
 	}
-	public void setNextPlayer(Player nextPlayer) {
-		this.nextPlayer = nextPlayer;
+	public void setNextPlayer(Player p) {
+		nextPlayer = p;
 	}
 	public int getBox() {
 		return box;
 	}
-	public void setBox(int box) {
-		this.box = box;
+	public void setBox(int b) {
+		box = b;
 	}
-
 }

@@ -44,8 +44,7 @@ public class Game {
 		int start = r.ints(cols+1,rows*cols).findFirst().getAsInt();
 		if (snakeAtBox(firstSnake, start).equals(" ")) {
 			snake.setBeginning(start);
-		}
-		else
+		}else
 			assignStart(snake);
 	}
 	private void assignEnd(Snake snake) {
@@ -53,8 +52,7 @@ public class Game {
 		int end = r.ints(1,snakeEndLimit(snake.getBeginning(),(rows*cols))).findFirst().getAsInt();
 		if (snakeAtBox(firstSnake, end).equals(" ")) {
 			snake.setEnd(end);
-		}
-		else
+		}else
 			assignEnd(snake);
 	}
 	private int snakeEndLimit(int start, int maxRow) {
@@ -112,8 +110,7 @@ public class Game {
 		int start = r.ints(2,(rows*cols)-cols).findFirst().getAsInt();
 		if (snakeAtBox(firstSnake, start).equals(" ") && ladderAtBox(firstLadder, start).equals(" ")) {
 			ladder.setBeginning(start);
-		}
-		else
+		}else
 			assignStart(ladder);
 	}
 	private void assignEnd(Ladder ladder) {
@@ -121,8 +118,7 @@ public class Game {
 		int end = r.ints(ladderEndLimit(ladder.getBeginning(),rows*cols),rows*cols).findFirst().getAsInt();
 		if (snakeAtBox(firstSnake, end).equals(" ") && ladderAtBox(firstLadder, end).equals(" ")) {
 			ladder.setEnd(end);
-		}
-		else
+		}else
 			assignEnd(ladder);
 	}
 	private int ladderEndLimit(int start, int maxRow) {
@@ -211,8 +207,6 @@ public class Game {
 		else if (ladderStartAtBox(firstLadder, newBox))
 			activePlayer.setBox(searchLadder(firstLadder,newBox).getEnd());
 	}
-	public void endGame() {
-	}
 	public Box searchBox(int i) {
 		if (i == 1)
 			return firstBox;
@@ -260,11 +254,11 @@ public class Game {
 	public String status(int rowLeft) {
 		if (rowLeft > 1) {
 			if ((rowLeft % 2) == 0)
-				return statusEvenRow(rowLeft, cols)+"\n"+status(rowLeft - 1);
+				return "<< "+statusEvenRow(rowLeft, cols)+" <<\n"+status(rowLeft - 1);
 			else
-				return statusOddRow(rowLeft, cols)+"\n"+status(rowLeft - 1);
+				return ">> "+statusOddRow(rowLeft, cols)+" >>\n"+status(rowLeft - 1);
 		}else
-			return statusOddRow(rowLeft, cols);
+			return ">> "+statusOddRow(rowLeft, cols)+" >>";
 	}
 	public String statusEvenRow(int row, int colLeft) {
 		if (colLeft>1) 
@@ -279,12 +273,7 @@ public class Game {
 			return infoAtBox((row*cols));
 	}
 	public String infoAtBox(int box) {
-		String text = "[";
-		text += playerAtBox(firstPlayer, box);
-		text += snakeAtBox(firstSnake, box);
-		text += ladderAtBox(firstLadder, box);
-		text += "]";
-		return text;
+		return "["+playerAtBox(firstPlayer, box)+snakeAtBox(firstSnake, box)+ladderAtBox(firstLadder, box)+"]";
 	}
 	public String playerAtBox(Player player, int box) {
 		if (player.getNextPlayer() == null) {
