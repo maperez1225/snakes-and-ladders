@@ -21,7 +21,7 @@ public class Main {
 			loadData();
 			showMenu();
 		} catch (ClassNotFoundException | IOException e) {
-			System.out.println("Excepcion al leer los datos de puntaje.");
+			System.out.println("Excepcion al leer los datos de los puntajes.");
 		}
 	}
 	public static void showMenu(){
@@ -34,9 +34,14 @@ public class Main {
 		switch(option) {
 		case 1:
 			newGame();
+			System.out.println("Presione ENTER para regresar al menu.");
+			sc.nextLine();
+			showMenu();
 			break;
 		case 2:
 			showLeaderboard();
+			System.out.println("Presione ENTER para regresar al menu.");
+			sc.nextLine();
 			showMenu();
 			break;
 		case 3:
@@ -98,7 +103,7 @@ public class Main {
 				}
 			}
 		}else if (line.equalsIgnoreCase("menu"))
-			showMenu();
+			System.out.println("Partida cancelada");
 		else {
 			Random r = new Random();
 			int roll = r.ints(1,7).findFirst().getAsInt();
@@ -120,38 +125,46 @@ public class Main {
 		System.out.println("Ingrese nombre del jugador");
 		String name=sc.nextLine();
 		try {
-			addScore(root,new Score(score,name));
+			Score newScore = new Score(score,name);
+			addScore(newScore);
+			saveData();
 		} catch (IOException e) {
-			System.out.println("no se pudo guardar el puntaje");
+			System.out.println("No se pudo guardar el puntaje");
 		}
 	}
-	public static void addScore(Score parent, Score newScore) throws IOException{
-		if (parent == null) {
-			parent = newScore;
-			saveData();
-		}else if (newScore.getScore() > parent.getScore())
-			addScore(parent.getRight(), newScore);
+	public static void addScore(Score newScore) {
+		if (root == null)
+			root = newScore;
 		else
-			addScore(parent.getLeft(), newScore);
+			addScore(root, newScore);
+	}
+	public static void addScore(Score parent, Score newScore){
+		if (newScore.getScore() > parent.getScore()) {
+			if (parent.getRight() == null)
+				parent.setRight(newScore);
+			else
+				addScore(parent.getRight(), newScore);
+		}else {
+			if (parent.getLeft() == null)
+				parent.setLeft(newScore);
+			else
+				addScore(parent.getLeft(), newScore);
+		}
 	}
 	public static void showLeaderboard() {
 		if(root==null) {
 			System.out.println("No hay puntajes");
-			System.out.println("Presione ENTER para volver al menu");
-			sc.nextLine();
 		}else {
 			showLeaderboard(root);
 		}
 	}
-	
-	public static void showLeaderboard(Score highScore) {
-		if (highScore.getRight()==null) {
-			System.out.println(highScore);
-			if(highScore.getLeft()!=null)
-				showLeaderboard(highScore.getLeft());
-		}else  {
-				showLeaderboard(highScore.getRight());
-		}
+	public static void showLeaderboard(Score r) {
+		if (r.getRight() != null)
+			showLeaderboard(r.getRight());
+		System.out.println(r);
+		System.out.println();
+		if (r.getLeft() != null)
+			showLeaderboard(r.getLeft());
 	}
 	public static void saveData() throws IOException{
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(SAVE_PATH_FILE));
