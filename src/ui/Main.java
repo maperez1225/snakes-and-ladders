@@ -36,7 +36,7 @@ public class Main {
 			newGame();
 			break;
 		case 2:
-			showLeaderboard(root);
+			showLeaderboard();
 			showMenu();
 			break;
 		case 3:
@@ -117,6 +117,13 @@ public class Main {
 		System.out.println(game.status());
 		int score = game.getMoves()*game.getFinalBox();
 		System.out.println("Puntaje: "+score);
+		System.out.println("Ingrese nombre del jugador");
+		String name=sc.nextLine();
+		try {
+			addScore(root,new Score(score,name));
+		} catch (IOException e) {
+			System.out.println("no se pudo guardar el puntaje");
+		}
 	}
 	public static void addScore(Score parent, Score newScore) throws IOException{
 		if (parent == null) {
@@ -127,15 +134,23 @@ public class Main {
 		else
 			addScore(parent.getLeft(), newScore);
 	}
-	public static void showLeaderboard(Score highScore) {
-		if (root == null)
+	public static void showLeaderboard() {
+		if(root==null) {
 			System.out.println("No hay puntajes");
-		else if (highScore.getRight() == null) {
-			System.out.println(highScore);
-			if (highScore.getLeft() != null)
-				showLeaderboard(highScore.getLeft());
+			System.out.println("Presione ENTER para volver al menu");
+			sc.nextLine();
 		}else {
-			showLeaderboard(highScore.getRight());
+			showLeaderboard(root);
+		}
+	}
+	
+	public static void showLeaderboard(Score highScore) {
+		if (highScore.getRight()==null) {
+			System.out.println(highScore);
+			if(highScore.getLeft()!=null)
+				showLeaderboard(highScore.getLeft());
+		}else  {
+				showLeaderboard(highScore.getRight());
 		}
 	}
 	public static void saveData() throws IOException{
