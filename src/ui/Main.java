@@ -56,12 +56,17 @@ public class Main {
 		System.out.println("Ingrese los criterios para crear el juego separado por espacio: filas, columnas, serpientes, escaleras, simbolos de jugadores todos juntos");
 		String[] gameArgs = sc.nextLine().split(" ");
 		if (gameArgs.length == 5) {
-			game = new Game(Integer.parseInt(gameArgs[0]),Integer.parseInt(gameArgs[1]),Integer.parseInt(gameArgs[2]),Integer.parseInt(gameArgs[3]),gameArgs[4]);
-			System.out.println("El tablero se ha generado:");
-			System.out.println(game.board());
-			System.out.println("Presione ENTER para comenzar el juego");
-			sc.nextLine();
-			nextTurn();
+			try {
+				game = new Game(Integer.parseInt(gameArgs[0]),Integer.parseInt(gameArgs[1]),Integer.parseInt(gameArgs[2]),Integer.parseInt(gameArgs[3]),gameArgs[4]);
+				System.out.println("El tablero se ha generado:");
+				System.out.println(game.board());
+				System.out.println("Presione ENTER para comenzar el juego");
+				sc.nextLine();
+				nextTurn();
+			} catch (StackOverflowError e) {
+				System.out.println("Error de generacion de juego. Intente generar el juego con menos escaleras o serpientes, o generar un tablero mas grande.");
+				newGame();
+			}
 		}
 		else {
 			System.out.println("Formato de criterios invalido.");
@@ -152,11 +157,10 @@ public class Main {
 		}
 	}
 	public static void showLeaderboard() {
-		if(root==null) {
+		if(root==null)
 			System.out.println("No hay puntajes");
-		}else {
+		else
 			showLeaderboard(root);
-		}
 	}
 	public static void showLeaderboard(Score r) {
 		if (r.getRight() != null)
