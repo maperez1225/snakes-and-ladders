@@ -4,8 +4,6 @@ public class Snake {
 	private int end;
 	private Snake nextSnake;
 	private char id;
-	public Snake() {
-	}
 	public char getId() {
 		return id;
 	}
