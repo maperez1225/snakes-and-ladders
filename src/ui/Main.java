@@ -53,9 +53,9 @@ public class Main {
 		}
 	}
 	public static void newGame(){
-		System.out.println("Ingrese los criterios para crear el juego separado por espacio: filas, columnas, serpientes, escaleras, simbolos de jugadores todos juntos");
+		System.out.println("Ingrese los criterios para crear el juego separado por espacio: filas, columnas, serpientes, escaleras, simbolos de jugadores todos juntos. Debe haber por lo menos 3 columnas y filas, y por lo menos 1 serpiente y escalera.");
 		String[] gameArgs = sc.nextLine().split(" ");
-		if (gameArgs.length == 5 && (Integer.parseInt(gameArgs[0])>0 && Integer.parseInt(gameArgs[1])>0 && Integer.parseInt(gameArgs[2])>0 && Integer.parseInt(gameArgs[3])>0)) {
+		if (gameArgs.length == 5 && (Integer.parseInt(gameArgs[0])>2 && Integer.parseInt(gameArgs[1])>2 && Integer.parseInt(gameArgs[2])>0 && Integer.parseInt(gameArgs[3])>0)) {
 			try {
 				game = new Game(Integer.parseInt(gameArgs[0]),Integer.parseInt(gameArgs[1]),Integer.parseInt(gameArgs[2]),Integer.parseInt(gameArgs[3]),gameArgs[4]);
 				System.out.println("El tablero se ha generado:");
@@ -129,8 +129,9 @@ public class Main {
 		System.out.println("Puntaje: "+score);
 		System.out.println("Ingrese nombre del jugador");
 		String name=sc.nextLine();
+		String gameData = "Simbolo: "+game.getActivePlayer().getSymbol()+"\nTurnos: "+game.getMoves()+"\nFilas: "+game.getRows()+"\nColumnas: "+game.getCols()+"\nSerpientes: "+game.getSnakes()+"\nEscaleras: "+game.getLadders()+"\nJugadores: "+game.getPlayerCharacters();
 		try {
-			Score newScore = new Score(score,name);
+			Score newScore = new Score(score,name,gameData);
 			addScore(newScore);
 			saveData();
 		} catch (IOException e) {

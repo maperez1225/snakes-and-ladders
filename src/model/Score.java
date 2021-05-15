@@ -4,14 +4,15 @@ public class Score implements Serializable{
 	private static final long serialVersionUID = 1;
 	private int score;
 	private String name;
+	private String gameData;
 	private Score left;
 	private Score right;
-	public Score(int s, String n) {
+	public Score(int s, String n, String gameData) {
 		score = s;
 		name = n;
 	}
 	public String toString() {
-		return "Puntaje: "+score+"\nNombre: "+name;
+		return "Puntaje: "+score+"\nNombre: "+name+"\n"+gameData;
 	}
 	public Score getLeft() {
 		return left;

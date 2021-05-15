@@ -6,6 +6,7 @@ public class Game {
 	private int snakes;
 	private int ladders;
 	private int moves;
+	private String playerCharacters;
 	private Player firstPlayer;
 	private Player activePlayer;
 	private Box firstBox;
@@ -17,6 +18,7 @@ public class Game {
 		snakes = s;
 		ladders = l;
 		moves = 1;
+		playerCharacters = players;
 		generateBoard();
 		generatePlayers(players);
 		generateSnakes(snakes);
@@ -187,6 +189,21 @@ public class Game {
 	}
 	public int getMoves() {
 		return moves;
+	}
+	public int getRows() {
+		return rows;
+	}
+	public int getCols() {
+		return cols;
+	}
+	public int getSnakes() {
+		return snakes;
+	}
+	public int getLadders() {
+		return ladders;
+	}
+	public String getPlayerCharacters() {
+		return playerCharacters;
 	}
 	public void updateActivePlayer() {
 		if (activePlayer.getNextPlayer()!=null)
