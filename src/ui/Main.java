@@ -127,7 +127,7 @@ public class Main {
 		System.out.println(game.status());
 		int score = game.getMoves()*game.getFinalBox();
 		System.out.println("Puntaje: "+score);
-		System.out.println("Ingrese nombre del jugador");
+		System.out.println("Ingrese nombre o apodo del jugador");
 		String name=sc.nextLine();
 		String gameData = "Simbolo: "+game.getActivePlayer().getSymbol()+"\nTurnos: "+game.getMoves()+"\nFilas: "+game.getRows()+"\nColumnas: "+game.getCols()+"\nSerpientes: "+game.getSnakes()+"\nEscaleras: "+game.getLadders()+"\nJugadores: "+game.getPlayerCharacters();
 		try {
